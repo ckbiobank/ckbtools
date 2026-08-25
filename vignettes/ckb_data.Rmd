@@ -1,0 +1,123 @@
+---
+title: "CKB data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{CKB data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(ckbtools)
+```
+
+Information about the CKB cohort data is available at [www.ckbiobank.org/data-access/data-overview](https://www.ckbiobank.org/data-access/data-overview). Details of the CKB Data Sharing Policy, data release schedules and data request application procedures are available at [www.ckbiobank.org/data-access](https://www.ckbiobank.org/data-access).
+
+
+This package includes the following entirely synthetic data sets, which have similar structure and variable names to real CKB data:
+
+* ckbtools_baseline
+* ckbtools_endpoints
+* ckbtools_endpoint_definitions
+* ckbtools_ckbtools_ascertainments
+* ckbtools_raw_olink_meta_data
+* ckbtools_raw_olink_protein_data
+* ckbtools_raw_somascan_meta_data
+* ckbtools_raw_somascan_protein_data
+* ckbtools_raw_somascan_sample_data
+
+A `ckbtools_participant_data` data set is also included in the package, which is derived from the synthetic raw data as below.
+
+```{r, eval = FALSE}
+ckbtools_baseline$sex <- factor(ckbtools_baseline$is_female,
+                       levels = c(0, 1),
+                       labels = c("Male", "Female"))
+
+ckbtools_baseline$age_at_study_date <- ckbtools_baseline$age_at_study_date_x100 / 100
+
+ckbtools_baseline$age_at_ckbtools_baseline_group <- cut(ckbtools_baseline$age_at_study_date,
+                                      breaks = seq(30, 80, by = 10),
+                                      right = FALSE)
+
+ckbtools_baseline$high_school_or_higher <- ckbtools_baseline$highest_education %in% c(3, 4, 5)
+
+ckbtools_baseline$education <- factor(ckbtools_baseline$highest_education,
+                                      levels = c(0, 1, 2, 3, 4, 5),
+                                      labels = c("No formal school",
+                                                 "Primary School",
+                                                 "Middle School",
+                                                 "High School",
+                                                 "Technical School / college",
+                                                 "University"))
+
+ckbtools_baseline$education_4_groups <- factor(ckbtools_baseline$highest_education,
+                                      levels = c(0, 1, 2, 3, 4, 5),
+                                      labels = c("No formal school",
+                                                 "Primary School",
+                                                 "Middle School",
+                                                 "High School or higher",
+                                                 "High School or higher",
+                                                 "High School or higher"))
+
+ckbtools_baseline$smoking <- factor(ckbtools_baseline$smoking_category,
+                           levels = c(1, 2, 3, 4),
+                           labels = c("Never smoker",
+                                      "Occasional smoker",
+                                      "Ex regular smoker",
+                                      "Smoker"))
+
+ckbtools_baseline$smoking_3_groups <- factor(ckbtools_baseline$smoking_category,
+                                    levels = c(1, 2, 3, 4),
+                                    labels = c("Never / Occasional smoker",
+                                               "Never / Occasional smoker",
+                                               "Ex regular smoker",
+                                               "Smoker"))
+
+ckbtools_baseline$current_regular_smoker <-  factor(ckbtools_baseline$smoking_category,
+                                           levels = c(1, 2, 3, 4),
+                                           labels = c("No",
+                                                      "No",
+                                                      "No",
+                                                      "Yes"))
+
+ckbtools_baseline$alcohol_3_groups <- factor(ckbtools_baseline$alcohol_category,
+                                    levels = c(1, 2, 3, 4, 5, 6),
+                                    labels = c("Never regular drinker",
+                                               "Weekly / Reduced / Ex",
+                                               "Occasional / Monthly",
+                                               "Occasional / Monthly",
+                                               "Weekly / Reduced / Ex",
+                                               "Weekly / Reduced / Ex"))
+
+ckbtools_baseline$bmi_grp <- cut(ckbtools_baseline$bmi_calc,
+                        c(0, 18.5, 25, 30, Inf),
+                        labels = c("<18.5", "18.5-25", "25-30", "30+"),
+                        right = FALSE)
+
+ckbtools_baseline$hours_since_last_ate <- ckbtools_baseline$hours_since_last_ate_x10 / 10
+
+ckbtools_baseline$region <- factor(ckbtools_baseline$region_code,
+                          levels = c(12, 16, 26, 36, 46, 52, 58, 68, 78, 88),
+                          labels = c("Qingdao", "Harbin", "Haikou", "Suzhou", "Liuzhou",
+                                     "Sichuan", "Gansu", "Henan", "Zhejiang", "Hunan"))
+
+ckbtools_endpoints$ihd <- ckbtools_endpoints$CKB0003_ep
+ckbtools_endpoints$ihd_date <- ckbtools_endpoints$CKB0003_datedeveloped
+
+ckbtools_endpoints$respiratory_diseases <- ckbtools_endpoints$CKB0032_ep
+ckbtools_endpoints$respiratory_diseases_date <- ckbtools_endpoints$CKB0032_datedeveloped
+
+ckbtools_endpoints <- ckbtools_endpoints[, c("csid", "ihd", "ihd_date", "respiratory_diseases", "respiratory_diseases_date")]
+
+ckbtools_baseline$all_cause_mortality_date <- ckbtools_baseline$censoring_date
+ckbtools_baseline$all_cause_mortality <- as.numeric(grepl("Dead", ckbtools_baseline$censoring_reason))
+
+ckbtools_participant_data <- merge(ckbtools_baseline, ckbtools_endpoints, by = "csid")
+
+csid_in_subcohort <- ckbtools_ascertainments$csid[ckbtools_ascertainments$olinkexpexpan_chd_b1_subcohort == 1]
+ckbtools_participant_data$proteomics_subcohort <- as.numeric(ckbtools_participant_data$csid %in% csid_in_subcohort)
+```

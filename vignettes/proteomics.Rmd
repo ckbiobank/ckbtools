@@ -1,0 +1,175 @@
+---
+title: "Proteomics"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Proteomics}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  class.output = "outp",
+  class.message = "outp",
+  class.warning = "outp",
+  class.error = "outp",
+  comment = "#"
+)
+library(ckbtools)
+
+# set number of Olink plates in synthetic data to prevent warning about number
+# of plates
+options(olink_expected_plates = 26)
+```
+
+# Introduction to CKB proteomics data
+
+The [China Kadoorie Biobank](http://www.ckbiobank.org) includes proteomics data from a nested case-cohort study of ~2k MI cases and ~2k subcohort participants. Plasma samples were analysed using two proteomics platforms: [Olink Explore (~3k proteins)](https://olink.com/products/olink-explore-series) and [SomaScan (~7k proteins)](https://somalogic.com/somascan-platform/).
+
+Details of the CKB Data Sharing Policy, data release schedules and data request application procedures are available at [www.ckbiobank.org/data-access](https://www.ckbiobank.org/data-access).
+
+
+# Observational proteomics analyses
+
+The functions in this package can be used to prepare analysis-ready data sets from raw CKB proteomics data and perform some observational proteomics analyses as shown in these articles:
+
+- **[Associations of proteins with participant characteristics](proteomics_characteristics.html)** demonstrates how to use this package to estimate associations between proteins and participant characteristics. The methods used are based on the papers ["Associations of 2923 Olink proteins with demographic, lifestyle, environmental and health characteristics in middle-aged Chinese adults"](https://doi.org/10.1007/s10654-025-01311-z) and ["Associations of 6600 SomaScan proteins with demographic, lifestyle, environmental and health characteristics in Chinese adults"](https://doi.org/10.1038/s41598-026-41444-z).
+
+- **[Associations of proteins with incident disease](proteomics_diseases.html)** demonstrates how to use this package to estimate associations between proteins and risk of incident disease using Cox proportional hazards models. The methods used are from ["Proteome-wide assessment of ~9500 plasma proteins with major diseases and multi-morbidity in a Chinese population"](https://doi.org/10.21203/rs.3.rs-5356315/v1).
+
+- **[Associations of proteins in a case-subcohort study](proteomics_case-subcohort.html)** demonstrates how to use this package to estimate associations between proteins and risk of incidence disease using Cox proportional hazards models with methods appropriate for a case-subcohort study design. The methods used are from ["Plasma Proteomics to Identify Drug Targets for Ischemic Heart Disease"](https://doi.org/10.1016/j.jacc.2023.09.804).
+
+
+# Preparing proteomics data
+
+This package includes several functions to assist with preparing the CKB proteomics data for analysis.
+
+## Import data
+
+First, all relevant protein data must be imported into R. For example, use `readRDS()` for RDS format data or `read.csv()` for csv data.
+```{r, eval = FALSE}
+raw_olink_meta_data <- readRDS("olink_explore_meta.rds")
+raw_olink_protein_data <- readRDS("data_baseline_olink_explore.rds")
+
+raw_somascan_meta_data <- readRDS("somalogic_meta.rds")
+raw_somascan_protein_data <- readRDS("data_baseline_somalogic.rds")
+raw_somascan_sample_data  <- readRDS("data_baseline_somalogic_samples.rds")
+```
+
+For demonstration, the synthetic data sets available in this package can be used:
+
+1. ckbtools_raw_olink_meta_data
+2. ckbtools_raw_olink_protein_data
+3. ckbtools_raw_somascan_meta_data
+4. ckbtools_raw_somascan_protein_data
+5. ckbtools_raw_somascan_sample_data
+
+
+## Prepare protein data
+
+To use the proteomics data preparation functions, the CKB data release number must be set using `options()`. The release number for CKB data can be found in the release.txt file. This ensures the correct code is used for the format of the supplied data.
+
+```{r}
+options(ckb.data.release = "19.02")
+```
+
+To prepare protein meta data, use the `prepare_olink_meta_data()` and `prepare_somascan_meta_data()` functions. These return data frames with one row per assay/aptamer and columns for protein details such as UniProt ID. The `names` argument specifies the naming system used for proteins: "protein" for names based on assay (for Olink) or target (for SomaScan); or "id" for names based on OlinkID (Olink ID) or SeqID (SomaLogic sequence identifier).
+
+```{r}
+olink_meta_data <- prepare_olink_meta_data(ckbtools_raw_olink_meta_data,
+                                           ckbtools_raw_olink_protein_data,
+                                           names = "id")
+somascan_meta_data <- prepare_somascan_meta_data(ckbtools_raw_somascan_meta_data,
+                                                 names = "id")
+```
+
+To prepare protein data, use the `prepare_olink_data()` and `prepare_somascan_data()` functions. The functions each create a 'wide' data set with one row per sample/participant and columns for each protein measure.
+
+```{r}
+olink_protein_data <- prepare_olink_data(ckbtools_raw_olink_protein_data,
+                                         olink_meta_data)
+```
+
+The `transform` argument can be used to apply a transformation to all SomaScan protein values (for example `"log2"` will log~2~ transform the RFU values).
+
+```{r}
+somascan_protein_data <- prepare_somascan_data(ckbtools_raw_somascan_protein_data,
+                                               ckbtools_raw_somascan_sample_data,
+                                               somascan_meta_data,
+                                               transform = "log2")
+```
+
+To merge participant data with protein data, use the `prepare_proteomics_analysis_dataset()` function. Only observations in both the participant data and proteomics data sets are retained. There must be a column in the participant data named "subcohort" that identifies observations that are part of the subcohort.
+
+```{r}
+ckbtools_participant_data$subcohort <- ckbtools_participant_data$proteomics_subcohort
+```
+
+The `plate_correction` argument can be used to correct protein values for plate effects. Set this to `"median-subcohort"`/`"mean-subcohort"` to centre on medians/medians across plates based on subcohort values.
+
+The `scaling` argument can be used to scale protein values. For example, `"scale-subcohort"` will scale values (as in the R function `scale()`) using the mean and standard deviation of subcohort values. `"rint"` will apply a rank inverse normal transformation to all values.
+
+```{r}
+olink_analysis_data <- prepare_proteomics_analysis_dataset(
+  participant_data  = ckbtools_participant_data,
+  protein_data      = olink_protein_data,
+  protein_meta_data = olink_meta_data,
+  plate_correction  = "median-subcohort",
+  scaling           = "none"
+)
+
+somascan_analysis_data <- prepare_proteomics_analysis_dataset(
+  participant_data  = ckbtools_participant_data,
+  protein_data      = somascan_protein_data,
+  protein_meta_data = somascan_meta_data,
+  plate_correction  = "none",
+  scaling           = "none"
+)
+```
+
+
+In summary, the proteomics data preparation steps in order are:
+
+1. Log transformation (using the `transform` argument in `prepare_somascan_data()`).
+2. Removing values/samples with QC warnings (using the `qc` argument in `prepare_olink_data()` and `prepare_somascan_data()`).
+3. Removing repeated samples (using the repeat_samples argument in `prepare_somascan_data()`).
+4. Merging proteomics and participant data (using the `participant_data` and `protein_data arguments` in `prepare_proteomics_analysis_dataset()`). Note that this is an "inner join" so that only matching observations in both data sets are kept.
+5. Plate correction (using the `plate_correction` argument in `prepare_proteomics_analysis_dataset()`).
+6. Scaling protein values (using the `scaling` argument in `prepare_proteomics_analysis_dataset()`).
+
+
+## Descriptive summary statistics
+
+Use `summarise_continuous()` to create basic descriptive summary statistics for proteins.
+
+```{r}
+protein_summary_stats <- summarise_continuous(olink_analysis_data,
+                                              cols = olink_meta_data$name,
+                                              by = "sex")
+
+protein_summary_stats[1:12, 1:7]
+```
+
+
+## Olink: Limit of detection
+
+The number and percentages of Olink protein values below the limit of detection can be obtained as follows:
+
+```{r}
+olink_meta_data <- prepare_olink_meta_data(ckbtools_raw_olink_meta_data,
+                                           ckbtools_raw_olink_protein_data)
+olink_protein_data <- prepare_olink_data(ckbtools_raw_olink_protein_data,
+                                         olink_meta_data,
+                                         columns = "lod")
+
+olink_meta_data %>%
+  dplyr::arrange(name) %>%
+  dplyr::select(name) %>%
+  dplyr::rowwise() %>%
+  dplyr::mutate(n = sum(!is.na(olink_protein_data[name])),
+                below_lod = sum(olink_protein_data[name] <
+                                  olink_protein_data[paste0("lod_", name)], na.rm = TRUE)) %>%
+  dplyr::ungroup() %>%
+  dplyr::mutate(p = 100 * below_lod / n)
+```
+

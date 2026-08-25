@@ -1,0 +1,283 @@
+---
+title: "Associations of proteins with participant characteristics"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Associations of proteins with participant characteristics}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  class.output = "outp",
+  class.message = "outp",
+  class.warning = "outp",
+  class.error = "outp",
+  comment = "#"
+)
+library(ckbtools)
+
+# set number of Olink plates in synthetic data to prevent warning about number
+# of plates
+options(olink_expected_plates = 26)
+```
+
+This article demonstrates how to use this package to estimate cross-sectional associations between proteins and participant characteristics. The methods used are based on the papers ["Associations of 2923 Olink proteins with demographic, lifestyle, environmental and health characteristics in middle-aged Chinese adults"](https://doi.org/10.1007/s10654-025-01311-z) and ["Associations of 6600 SomaScan proteins with demographic, lifestyle, environmental and health characteristics in Chinese adults"](https://doi.org/10.1038/s41598-026-41444-z).
+
+
+# Import data
+First, all relevant participant and protein data must be imported into R. For example, use `readRDS()` for RDS format data or `read.csv()` for csv data.
+
+```{r, eval = FALSE}
+baseline       <- readRDS("baseline.rds")
+ascertainments <- readRDS("ascertainments.rds")
+
+raw_olink_meta_data <- readRDS("olink_explore_meta.rds")
+raw_olink_protein_data <- readRDS("data_baseline_olink_explore.rds")
+
+raw_somascan_meta_data <- readRDS("somalogic_meta.rds")
+raw_somascan_protein_data <- readRDS("data_baseline_somalogic.rds")
+raw_somascan_sample_data  <- readRDS("data_baseline_somalogic_samples.rds")
+```
+
+For demonstration, the synthetic data sets available in this package can be used:
+
+1. ckbtools_participant_data
+2. ckbtools_ascertainments
+3. ckbtools_raw_olink_meta_data
+4. ckbtools_raw_olink_protein_data
+5. ckbtools_raw_somascan_meta_data
+6. ckbtools_raw_somascan_protein_data
+7. ckbtools_raw_somascan_sample_data
+
+
+
+# Preparation of participant data
+
+A data set containing relevant participant baseline data must be prepared manually. For these analyses, the data must contain all participant characteristics used for  exclusions or as adjustment variables. See [CKB data](ckb_data.html) for an example.
+
+
+## Select subcohort participants
+
+These analyses of baseline characteristics will use only participants in the subcohort of the nested case-subcohort proteomics study.
+
+```{r}
+subcohort_participant_data <- ckbtools_participant_data[ckbtools_participant_data$proteomics_subcohort == 1, ]
+subcohort_participant_data$subcohort <- 1
+```
+
+
+# Prepare protein data
+
+Prepare the protein data as described in [Proteomics](proteomics.html#preparing-protein-data).
+
+```{r}
+options(ckb.data.release = "19.02")
+
+## meta data
+olink_meta_data <- prepare_olink_meta_data(ckbtools_raw_olink_meta_data,
+                                           ckbtools_raw_olink_protein_data)
+
+somascan_meta_data <- prepare_somascan_meta_data(ckbtools_raw_somascan_meta_data)
+
+## protein data
+olink_protein_data <- prepare_olink_data(ckbtools_raw_olink_protein_data,
+                                         olink_meta_data)
+
+somascan_protein_data <- prepare_somascan_data(ckbtools_raw_somascan_protein_data,
+                                               ckbtools_raw_somascan_sample_data,
+                                               somascan_meta_data,
+                                               transform = "log")
+
+## proteomics analysis data
+olink_analysis_data <- prepare_proteomics_analysis_dataset(
+  subcohort_participant_data,
+  olink_protein_data,
+  olink_meta_data,
+  plate_correction = "none",
+  scaling = "scale"
+)
+
+somascan_analysis_data <- prepare_proteomics_analysis_dataset(
+  subcohort_participant_data,
+  somascan_protein_data,
+  somascan_meta_data,
+  plate_correction = "none",
+  scaling = "scale"
+)
+
+```
+
+
+# One model
+
+The `multiple_models()` function can be used to fit a single or multiple linear regression models. The code below will return a the results of a linear regression of protein ACAA1 (Olink) on BMI (kg/m^2^). The model is adjusted for age (and its square), sex, region, fasting time (and its square), outdoor temperature (and its square) and plate.
+
+```{r, message=FALSE}
+basic_adjustment_terms <- c("age_at_study_date",
+                            "I(age_at_study_date^2)",
+                            "sex",
+                            "region",
+                            "hours_since_last_ate",
+                            "I(hours_since_last_ate^2)",
+                            "region_mean_temp",
+                            "I(region_mean_temp^2)",
+                            "plateid")
+
+result <- multiple_models(
+  olink_analysis_data,
+  model = "linear",
+  exposures = "bmi_calc",
+  outcomes = "ACAA1",
+  adjust_for = list(basic = basic_adjustment_terms)
+)
+
+result[, c("outcome", "term", "estimate", "std.error", "p.value", "n")]
+```
+
+By default, the function returns one row for a continuous exposure or one row per group for a categorical exposure. Binary or categorical exposures stored as numeric are treated as continuous. These should be changed to factors to treat as categorical.
+
+The code below returns the results of a linear regression of protein CRBB2 (SomaScan) on BMI (grouped) adjusted for age, sex and region.
+
+```{r, message=FALSE}
+result <- multiple_models(
+  somascan_analysis_data,
+  model = "linear",
+  exposures = "bmi_grp",
+  outcomes = "CRBB2",
+  adjust_for = list(basic = basic_adjustment_terms)
+)
+
+result[, c("outcome", "term", "estimate", "std.error", "p.value", "n", "n_group")]
+```
+
+
+# Analysis of multiple participant charateristics
+
+Multiple models with different exposures can be specified by setting `exposures` as a character vector.
+
+Use the `remove_adjust_for` argument to remove terms from the adjustment for a specific exposure (or outcome). Here, the age terms are removed from adjustment when the exposure is `age_at_study_date`.
+
+```{r, message=FALSE}
+results <- multiple_models(
+  olink_analysis_data,
+  model = "linear",
+  exposures = c("age_at_study_date",
+                "sbp_mean",
+                "has_diabetes",
+                "current_regular_smoker"),
+  outcomes = "ACAA1",
+  adjust_for = list(basic = basic_adjustment_terms),
+  remove_adjust_for = list(age_at_study_date = c("age_at_study_date",
+                                                 "I(age_at_study_date^2)"))
+)
+
+results[, c("exposure", "term", "estimate", "std.error", "p.value", "n", "n_group")]
+
+```
+
+Note: `has_diabetes` is numeric in the data so is treated as a continuous variable and reported in a single row. Create a factor to treat it is a categorical exposure.  
+
+```{r, message=FALSE}
+olink_analysis_data$has_diabetes <- factor(olink_analysis_data$has_diabetes,
+                                           levels = c(0, 1),
+                                           labels = c("No", "Yes"))
+
+results <- multiple_models(
+  olink_analysis_data,
+  model = "linear",
+  exposures = c("age_at_study_date",
+                "sbp_mean",
+                "has_diabetes",
+                "current_regular_smoker"),
+  outcomes = "ACAA1",
+  adjust_for = list(basic = basic_adjustment_terms),
+  remove_adjust_for = list(age_at_study_date = c("age_at_study_date",
+                                                 "I(age_at_study_date^2)"))
+)
+
+results[, c("exposure", "term", "estimate", "std.error", "p.value", "n", "n_group")]
+```
+
+
+# Analysis of multiple proteins
+
+Multiple models with different outcomes can be specified by setting `outcomes` as a character vector.
+
+```{r, message=FALSE}
+somascan_results <- multiple_models(
+  somascan_analysis_data,
+  model = "linear",
+  exposures = c("sbp_mean", "has_diabetes"),
+  outcomes = somascan_meta_data$name,
+  adjust_for = list(basic = basic_adjustment_terms)
+)
+```
+
+# Full analyses
+
+Multiple levels of adjustment are specified using a named list. 
+
+For comparison of nested models the adjustment variables of the simpler model should be included as adjustment factors in the more complex model.   
+
+```{r, message=FALSE}
+
+basic_lifestyle_adjustment_terms <- c(basic_adjustment_terms,
+                                      "smoking_3_groups",
+                                      "alcohol_3_groups")
+
+olink_results <- multiple_models(
+  olink_analysis_data,
+  model = "linear",
+  exposures = c("sbp_mean", "has_diabetes"),
+  outcomes = olink_meta_data$name,
+  adjust_for = list(basic = basic_adjustment_terms,
+                    basic_lifestyle = basic_lifestyle_adjustment_terms)
+)
+```
+
+
+# Check for errors and warnings
+
+After fitting multiple models, always check for warnings and errors. If there are any, decide how these will be handled when summarising results or for further analyses.
+
+```{r}
+olink_results %>%
+  dplyr::filter(!is.na(error) | !is.na(warnings)) %>%
+  dplyr::distinct(outcome, exposure, adjustment, error, warnings)
+
+somascan_results %>%
+  dplyr::filter(!is.na(error) | !is.na(warnings)) %>%
+  dplyr::distinct(outcome, exposure, adjustment, error, warnings)
+```
+
+
+# Select one result per protein
+
+To summarise the somascan results as in the referenced papers, one aptamer per Uniprot ID was selected choosing the result with the smallest p-value and no error or warning (or just the smallest p-value if all have error or warning).
+
+```{r}
+somascan_results <- somascan_results %>%
+  dplyr::filter(!is.na(estimate))
+
+somascan_results_per_protein <- somascan_results %>%
+  dplyr::inner_join(somascan_meta_data, by = c("outcome" = "name")) %>%
+  dplyr::group_by(adjustment, exposure, uniprot) %>%
+  dplyr::filter(p.value == min(p.value)) %>%
+  dplyr::distinct() %>%
+  dplyr::ungroup()
+```
+
+In the case of Olink there are a number of assays that are associated with more than one panel.  These are identified in the table below and  
+
+To summarise the Olink results as in the referenced papers, where more than one panel was associated with one assay a single assay was selected across all 4 panels choosing the result with the smallest p-value and no error or warning (or just the smallest p-value if all have error or warning)
+
+```{r}
+olink_results_per_protein <- olink_results %>%
+  dplyr::filter(!is.na(estimate)) %>%
+  dplyr::inner_join(olink_meta_data, by = c("outcome" = "name")) %>%
+  dplyr::group_by(adjustment, exposure, uniprot) %>%
+  dplyr::filter(p.value == min(p.value)) %>%
+  dplyr::distinct() %>%
+  dplyr::ungroup()
+```

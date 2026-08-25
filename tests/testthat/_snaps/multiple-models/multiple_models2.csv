@@ -1,0 +1,73 @@
+"","model_id","outcome","exposure","subgroup","adjustment","error","warnings","messages","output","term","estimate","std.error","statistic","p.value","n","ncases","ncontrols","n_group","ncases_group","ncontrols_group","formula"
+"1",1,"ihd","age_at_baseline_group","Male","none",NA,NA,NA,NA,"age_at_baseline_group[30,40)",NA,NA,NA,NA,10583,904,9679,1579,43,1536,"ihd ~ age_at_baseline_group"
+"2",1,"ihd","age_at_baseline_group","Male","none",NA,NA,NA,NA,"age_at_baseline_group[40,50)",0.455280459398703,0.178041255898968,2.55716270422772,0.0105529844942026,NA,NA,NA,3170,134,3036,NA
+"3",1,"ihd","age_at_baseline_group","Male","none",NA,NA,NA,NA,"age_at_baseline_group[50,60)",1.29796687408887,0.165860194798576,7.82566833268916,5.04967013772857e-15,NA,NA,NA,3291,306,2985,NA
+"4",1,"ihd","age_at_baseline_group","Male","none",NA,NA,NA,NA,"age_at_baseline_group[60,70)",1.8134188539031,0.168065622895814,10.7899451574774,3.84018641107118e-27,NA,NA,NA,1843,270,1573,NA
+"5",1,"ihd","age_at_baseline_group","Male","none",NA,NA,NA,NA,"age_at_baseline_group[70,80)",2.28491819326845,0.179862814856953,12.7036719351116,5.6419087529924e-37,NA,NA,NA,700,151,549,NA
+"6",1,"ihd","age_at_baseline_group","Male","none",NA,NA,NA,NA,"(Intercept)",-3.57573679796361,0.154617663891309,-23.1263149886758,2.51732012154075e-118,NA,NA,NA,NA,NA,NA,NA
+"7",2,"ihd","age_at_baseline_group","Female","none",NA,NA,NA,NA,"age_at_baseline_group[30,40)",NA,NA,NA,NA,14417,1367,13050,2083,60,2023,"ihd ~ age_at_baseline_group"
+"8",2,"ihd","age_at_baseline_group","Female","none",NA,NA,NA,NA,"age_at_baseline_group[40,50)",0.551659937731018,0.148574549784853,3.7130177310304,0.00020480253262483,NA,NA,NA,4370,214,4156,NA
+"9",2,"ihd","age_at_baseline_group","Female","none",NA,NA,NA,NA,"age_at_baseline_group[50,60)",1.24371676477533,0.140846569227928,8.83029506215849,1.04399947870524e-18,NA,NA,NA,4417,412,4005,NA
+"10",2,"ihd","age_at_baseline_group","Female","none",NA,NA,NA,NA,"age_at_baseline_group[60,70)",1.91636510746407,0.141104457190807,13.5811805354432,5.17849853862029e-42,NA,NA,NA,2605,437,2168,NA
+"11",2,"ihd","age_at_baseline_group","Female","none",NA,NA,NA,NA,"age_at_baseline_group[70,80)",2.46694139745925,0.150638338809565,16.3765839224895,2.8109337017574e-60,NA,NA,NA,942,244,698,NA
+"12",2,"ihd","age_at_baseline_group","Female","none",NA,NA,NA,NA,"(Intercept)",-3.5179922749281,0.130999556133286,-26.8549938547021,7.37471567606703e-159,NA,NA,NA,NA,NA,NA,NA
+"13",3,"all_cause_mortality","age_at_baseline_group","Male","none",NA,NA,NA,NA,"age_at_baseline_group[30,40)",NA,NA,NA,NA,10583,1324,9259,1579,36,1543,"all_cause_mortality ~ age_at_baseline_group"
+"14",3,"all_cause_mortality","age_at_baseline_group","Male","none",NA,NA,NA,NA,"age_at_baseline_group[40,50)",0.505097144897054,0.192942498704198,2.61786360334963,0.00884821649863157,NA,NA,NA,3170,118,3052,NA
+"15",3,"all_cause_mortality","age_at_baseline_group","Male","none",NA,NA,NA,NA,"age_at_baseline_group[50,60)",1.69482808018075,0.177376616650641,9.55496903810531,1.23620879570371e-21,NA,NA,NA,3291,371,2920,NA
+"16",3,"all_cause_mortality","age_at_baseline_group","Male","none",NA,NA,NA,NA,"age_at_baseline_group[60,70)",2.69164821885915,0.176840660656795,15.2207541459201,2.57545020225118e-52,NA,NA,NA,1843,472,1371,NA
+"17",3,"all_cause_mortality","age_at_baseline_group","Male","none",NA,NA,NA,NA,"age_at_baseline_group[70,80)",3.62634666408931,0.184834114043488,19.6194662595461,1.05454552147143e-85,NA,NA,NA,700,327,373,NA
+"18",3,"all_cause_mortality","age_at_baseline_group","Male","none",NA,NA,NA,NA,"(Intercept)",-3.75796491283561,0.168595909177092,-22.2897751859939,4.64317861701287e-110,NA,NA,NA,NA,NA,NA,NA
+"19",4,"all_cause_mortality","age_at_baseline_group","Female","none",NA,NA,NA,NA,"age_at_baseline_group[30,40)",NA,NA,NA,NA,14417,1189,13228,2083,21,2062,"all_cause_mortality ~ age_at_baseline_group"
+"20",4,"all_cause_mortality","age_at_baseline_group","Female","none",NA,NA,NA,NA,"age_at_baseline_group[40,50)",0.892385355002558,0.240357588745864,3.7127405032595,0.000205027075741225,NA,NA,NA,4370,106,4264,NA
+"21",4,"all_cause_mortality","age_at_baseline_group","Female","none",NA,NA,NA,NA,"age_at_baseline_group[50,60)",1.91662625015896,0.227688081078358,8.41777154553542,3.8371311586541e-17,NA,NA,NA,4417,286,4131,NA
+"22",4,"all_cause_mortality","age_at_baseline_group","Female","none",NA,NA,NA,NA,"age_at_baseline_group[60,70)",3.03131829550948,0.225323833292101,13.4531631706256,2.94978602030792e-41,NA,NA,NA,2605,454,2151,NA
+"23",4,"all_cause_mortality","age_at_baseline_group","Female","none",NA,NA,NA,NA,"age_at_baseline_group[70,80)",3.93174129424187,0.22982989344097,17.1071797292188,1.31200175588674e-65,NA,NA,NA,942,322,620,NA
+"24",4,"all_cause_mortality","age_at_baseline_group","Female","none",NA,NA,NA,NA,"(Intercept)",-4.58690922673683,0.219324614740733,-20.9137913323549,4.0106227312692e-97,NA,NA,NA,NA,NA,NA,NA
+"25",5,"ihd","education_4_groups","Male","none",NA,NA,NA,NA,"education_4_groupsNo formal school",NA,NA,NA,NA,10583,904,9679,1876,157,1719,"ihd ~ education_4_groups"
+"26",5,"ihd","education_4_groups","Male","none",NA,NA,NA,NA,"education_4_groupsPrimary School",0.0493281359094644,0.105443203249089,0.467817122294135,0.639915375012531,NA,NA,NA,3004,263,2741,NA
+"27",5,"ihd","education_4_groups","Male","none",NA,NA,NA,NA,"education_4_groupsMiddle School",0.0615002140551086,0.108954129813215,0.564459687398184,0.572441327868283,NA,NA,NA,2519,223,2296,NA
+"28",5,"ihd","education_4_groups","Male","none",NA,NA,NA,NA,"education_4_groupsHigh School or higher",-0.0225931577539585,0.105473636896721,-0.21420668158131,0.830385885863133,NA,NA,NA,3184,261,2923,NA
+"29",5,"ihd","education_4_groups","Male","none",NA,NA,NA,NA,"(Intercept)",-2.3932522000351,0.0833736052439867,-28.7051542635277,3.28998558190975e-181,NA,NA,NA,NA,NA,NA,NA
+"30",6,"ihd","education_4_groups","Female","none",NA,NA,NA,NA,"education_4_groupsNo formal school",NA,NA,NA,NA,14417,1367,13050,2499,222,2277,"ihd ~ education_4_groups"
+"31",6,"ihd","education_4_groups","Female","none",NA,NA,NA,NA,"education_4_groupsPrimary School",0.0300747697496697,0.0884561955257253,0.339996193267471,0.733859394682324,NA,NA,NA,4184,382,3802,NA
+"32",6,"ihd","education_4_groups","Female","none",NA,NA,NA,NA,"education_4_groupsMiddle School",0.0992313310096269,0.0907222466060161,1.09379269938677,0.274045906759075,NA,NA,NA,3467,337,3130,NA
+"33",6,"ihd","education_4_groups","Female","none",NA,NA,NA,NA,"education_4_groupsHigh School or higher",0.128888002114933,0.0868990501184185,1.48319230117356,0.138023326107895,NA,NA,NA,4267,426,3841,NA
+"34",6,"ihd","education_4_groups","Female","none",NA,NA,NA,NA,"(Intercept)",-2.3279366841918,0.0703112952538819,-33.109000136977,2.20553610666638e-240,NA,NA,NA,NA,NA,NA,NA
+"35",7,"all_cause_mortality","education_4_groups","Male","none",NA,NA,NA,NA,"education_4_groupsNo formal school",NA,NA,NA,NA,10583,1324,9259,1876,239,1637,"all_cause_mortality ~ education_4_groups"
+"36",7,"all_cause_mortality","education_4_groups","Male","none",NA,NA,NA,NA,"education_4_groupsPrimary School",-0.0478783127877833,0.0888759013749851,-0.538709729488707,0.590087159242671,NA,NA,NA,3004,367,2637,NA
+"37",7,"all_cause_mortality","education_4_groups","Male","none",NA,NA,NA,NA,"education_4_groupsMiddle School",-0.003279969319018,0.0915132742991748,-0.0358414595493015,0.971408774350113,NA,NA,NA,2519,320,2199,NA
+"38",7,"all_cause_mortality","education_4_groups","Male","none",NA,NA,NA,NA,"education_4_groupsHigh School or higher",-0.0217531235947767,0.0875581277107955,-0.248442082574302,0.803792376792566,NA,NA,NA,3184,398,2786,NA
+"39",7,"all_cause_mortality","education_4_groups","Male","none",NA,NA,NA,NA,"(Intercept)",-1.92415702541961,0.0692455619036409,-27.7874418594101,6.15236642459587e-170,NA,NA,NA,NA,NA,NA,NA
+"40",8,"all_cause_mortality","education_4_groups","Female","none",NA,NA,NA,NA,"education_4_groupsNo formal school",NA,NA,NA,NA,14417,1189,13228,2499,204,2295,"all_cause_mortality ~ education_4_groups"
+"41",8,"all_cause_mortality","education_4_groups","Female","none",NA,NA,NA,NA,"education_4_groupsPrimary School",0.0141002271404375,0.0921325819054188,0.153042787348697,0.878364533290762,NA,NA,NA,4184,346,3838,NA
+"42",8,"all_cause_mortality","education_4_groups","Female","none",NA,NA,NA,NA,"education_4_groupsMiddle School",0.0340590195918076,0.0952748925905053,0.357481584767504,0.720731309896936,NA,NA,NA,3467,292,3175,NA
+"43",8,"all_cause_mortality","education_4_groups","Female","none",NA,NA,NA,NA,"education_4_groupsHigh School or higher",-0.00415402418723165,0.0920577696100154,-0.0451241020158251,0.964008390355878,NA,NA,NA,4267,347,3920,NA
+"44",8,"all_cause_mortality","education_4_groups","Female","none",NA,NA,NA,NA,"(Intercept)",-2.42036812865043,0.0730594832934164,-33.1287331848477,1.14664431166465e-240,NA,NA,NA,NA,NA,NA,NA
+"45",9,"ihd","smoking","Male","none",NA,NA,NA,NA,"smokingNever smoker",NA,NA,NA,NA,10583,904,9679,1896,136,1760,"ihd ~ smoking"
+"46",9,"ihd","smoking","Male","none",NA,NA,NA,NA,"smokingOccasional smoker",0.16446888136256,0.125357783727958,1.3119957650135,0.189521563473447,NA,NA,NA,1677,140,1537,NA
+"47",9,"ihd","smoking","Male","none",NA,NA,NA,NA,"smokingEx regular smoker",0.204544555540519,0.123767813632381,1.65264740110917,0.0984026450615728,NA,NA,NA,1709,148,1561,NA
+"48",9,"ihd","smoking","Male","none",NA,NA,NA,NA,"smokingSmoker",0.253463651788111,0.101053749672094,2.50820630219627,0.0121345797298652,NA,NA,NA,5301,480,4821,NA
+"49",9,"ihd","smoking","Male","none",NA,NA,NA,NA,"(Intercept)",-2.56041420229198,0.0890005693805031,-28.7685148546126,5.31474961970564e-182,NA,NA,NA,NA,NA,NA,NA
+"50",10,"ihd","smoking","Female","none",NA,NA,NA,NA,"smokingNever smoker",NA,NA,NA,NA,14417,1367,13050,11032,1015,10017,"ihd ~ smoking"
+"51",10,"ihd","smoking","Female","none",NA,NA,NA,NA,"smokingOccasional smoker",-0.0816272174113404,0.11168920493862,-0.730842496875144,0.464875362716696,NA,NA,NA,1124,96,1028,NA
+"52",10,"ihd","smoking","Female","none",NA,NA,NA,NA,"smokingEx regular smoker",0.273983240189882,0.0986708349615194,2.7767398572915,0.00549071056086238,NA,NA,NA,1114,131,983,NA
+"53",10,"ihd","smoking","Female","none",NA,NA,NA,NA,"smokingSmoker",0.188192003674532,0.100317124429788,1.87597087480561,0.0606592793242702,NA,NA,NA,1147,125,1022,NA
+"54",10,"ihd","smoking","Female","none",NA,NA,NA,NA,"(Intercept)",-2.2893950371355,0.0329401258318143,-69.5017089134601,0,NA,NA,NA,NA,NA,NA,NA
+"55",11,"all_cause_mortality","smoking","Male","none",NA,NA,NA,NA,"smokingNever smoker",NA,NA,NA,NA,10583,1324,9259,1896,173,1723,"all_cause_mortality ~ smoking"
+"56",11,"all_cause_mortality","smoking","Male","none",NA,NA,NA,NA,"smokingOccasional smoker",0.0966594470191442,0.114049724440716,0.847520215354739,0.396705224164192,NA,NA,NA,1677,167,1510,NA
+"57",11,"all_cause_mortality","smoking","Male","none",NA,NA,NA,NA,"smokingEx regular smoker",0.525082880326774,0.10523748726739,4.98950415827233,6.05344713397662e-07,NA,NA,NA,1709,248,1461,NA
+"58",11,"all_cause_mortality","smoking","Male","none",NA,NA,NA,NA,"smokingSmoker",0.47358687161253,0.0890840125306995,5.31618253555121,1.05966850551532e-07,NA,NA,NA,5301,736,4565,NA
+"59",11,"all_cause_mortality","smoking","Male","none",NA,NA,NA,NA,"(Intercept)",-2.29853054591258,0.0797383764721169,-28.8259009978255,1.01606488804224e-182,NA,NA,NA,NA,NA,NA,NA
+"60",12,"all_cause_mortality","smoking","Female","none",NA,NA,NA,NA,"smokingNever smoker",NA,NA,NA,NA,14417,1189,13228,11032,867,10165,"all_cause_mortality ~ smoking"
+"61",12,"all_cause_mortality","smoking","Female","none",NA,NA,NA,NA,"smokingOccasional smoker",-0.176437745554563,0.12465275212655,-1.41543401605318,0.156941282049376,NA,NA,NA,1124,75,1049,NA
+"62",12,"all_cause_mortality","smoking","Female","none",NA,NA,NA,NA,"smokingEx regular smoker",0.270412338931758,0.105727733324129,2.55762920881654,0.0105388398009962,NA,NA,NA,1114,112,1002,NA
+"63",12,"all_cause_mortality","smoking","Female","none",NA,NA,NA,NA,"smokingSmoker",0.447257677872609,0.0982208124163512,4.55359375339632,5.2737152281342e-06,NA,NA,NA,1147,135,1012,NA
+"64",12,"all_cause_mortality","smoking","Female","none",NA,NA,NA,NA,"(Intercept)",-2.46166674928122,0.03538047899274,-69.5769763260229,0,NA,NA,NA,NA,NA,NA,NA
+"65",13,"ihd","has_diabetes","Male","none",NA,NA,NA,NA,"has_diabetes",0.776831603035463,0.109513832141205,7.0934564871571,1.3080309550877e-12,10583,904,9679,NA,NA,NA,"ihd ~ has_diabetes"
+"66",13,"ihd","has_diabetes","Male","none",NA,NA,NA,NA,"(Intercept)",-2.44014874914573,0.0370494348721484,-65.8619694893133,0,NA,NA,NA,NA,NA,NA,NA
+"67",14,"ihd","has_diabetes","Female","none",NA,NA,NA,NA,"has_diabetes",0.476498562206723,0.089170188841514,5.343698027304,9.10692357098707e-08,14417,1367,13050,NA,NA,NA,"ihd ~ has_diabetes"
+"68",14,"ihd","has_diabetes","Female","none",NA,NA,NA,NA,"(Intercept)",-2.30300097987869,0.030250731583465,-76.1304226155477,0,NA,NA,NA,NA,NA,NA,NA
+"69",15,"all_cause_mortality","has_diabetes","Male","none",NA,NA,NA,NA,"has_diabetes",0.592425054684964,0.099630144283834,5.94624306672906,2.74366644052142e-09,10583,1324,9259,NA,NA,NA,"all_cause_mortality ~ has_diabetes"
+"70",15,"all_cause_mortality","has_diabetes","Male","none",NA,NA,NA,NA,"(Intercept)",-1.99300537305233,0.0309657100868246,-64.3616880563742,0,NA,NA,NA,NA,NA,NA,NA
+"71",16,"all_cause_mortality","has_diabetes","Female","none",NA,NA,NA,NA,"has_diabetes",0.635203159722326,0.0903620356382584,7.0295357473486,2.07221859629648e-12,14417,1189,13228,NA,NA,NA,"all_cause_mortality ~ has_diabetes"
+"72",16,"all_cause_mortality","has_diabetes","Female","none",NA,NA,NA,NA,"(Intercept)",-2.47585016884425,0.0325056660456303,-76.1667262983855,0,NA,NA,NA,NA,NA,NA,NA

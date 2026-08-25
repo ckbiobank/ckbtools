@@ -1,0 +1,29 @@
+"","model_id","outcome","exposure","subgroup","adjustment","error","warnings","messages","output","term","estimate","std.error","statistic","p.value","n","nevent","n_group","nevent_group","formula"
+"1",1,"ihd","age_at_baseline_group","all","none",NA,NA,NA,NA,"age_at_baseline_group[30,40)",NA,NA,NA,NA,25000,2271,3662,103,"Surv(study_time, ihd) ~ age_at_baseline_group"
+"2",1,"ihd","age_at_baseline_group","all","none",NA,NA,NA,NA,"age_at_baseline_group[40,50)",0.517706977555107,0.112171796796716,4.61530431302017,3.92519737401172e-06,NA,NA,7540,348,NA
+"3",1,"ihd","age_at_baseline_group","all","none",NA,NA,NA,NA,"age_at_baseline_group[50,60)",1.27592571645056,0.105369760704425,12.1090311672026,9.46049729546603e-34,NA,NA,7708,718,NA
+"4",1,"ihd","age_at_baseline_group","all","none",NA,NA,NA,NA,"age_at_baseline_group[60,70)",1.91912859601855,0.105497176392431,18.1912792516808,6.05112041160893e-74,NA,NA,4448,707,NA
+"5",1,"ihd","age_at_baseline_group","all","none",NA,NA,NA,NA,"age_at_baseline_group[70,80)",2.53772752401839,0.110764290767345,22.9110619174979,3.60450488076477e-116,NA,NA,1642,395,NA
+"6",2,"all_cause_mortality","age_at_baseline_group","all","none",NA,NA,NA,NA,"age_at_baseline_group[30,40)",NA,NA,NA,NA,25000,2513,3662,57,"Surv(study_time, all_cause_mortality) ~ age_at_baseline_group"
+"7",2,"all_cause_mortality","age_at_baseline_group","all","none",NA,NA,NA,NA,"age_at_baseline_group[40,50)",0.659780989823204,0.148351833238089,4.44740705539059,8.69130450672266e-06,NA,NA,7540,224,NA
+"8",2,"all_cause_mortality","age_at_baseline_group","all","none",NA,NA,NA,NA,"age_at_baseline_group[50,60)",1.74264608665706,0.138081323574282,12.6204329560876,1.62923082976947e-36,NA,NA,7708,657,NA
+"9",2,"all_cause_mortality","age_at_baseline_group","all","none",NA,NA,NA,NA,"age_at_baseline_group[60,70)",2.70851089097576,0.136477801912468,19.8457980200539,1.19811181544936e-87,NA,NA,4448,926,NA
+"10",2,"all_cause_mortality","age_at_baseline_group","all","none",NA,NA,NA,NA,"age_at_baseline_group[70,80)",3.48610560535918,0.138184232652112,25.2279550166602,1.97732853300591e-140,NA,NA,1642,649,NA
+"11",3,"ihd","education_4_groups","all","none",NA,NA,NA,NA,"education_4_groupsNo formal school",NA,NA,NA,NA,25000,2271,4375,379,"Surv(study_time, ihd) ~ education_4_groups"
+"12",3,"ihd","education_4_groups","all","none",NA,NA,NA,NA,"education_4_groupsPrimary School",0.0355142491512968,0.0647218659610762,0.548721033053267,0.583196909655021,NA,NA,7188,645,NA
+"13",3,"ihd","education_4_groups","all","none",NA,NA,NA,NA,"education_4_groupsMiddle School",0.0795807685080368,0.0665150503272636,1.1964325083795,0.231527821665844,NA,NA,5986,560,NA
+"14",3,"ihd","education_4_groups","all","none",NA,NA,NA,NA,"education_4_groupsHigh School or higher",0.0608632682554319,0.0639854672987018,0.951204559799578,0.341500544178116,NA,NA,7451,687,NA
+"15",4,"all_cause_mortality","education_4_groups","all","none",NA,NA,NA,NA,"education_4_groupsNo formal school",NA,NA,NA,NA,25000,2513,4375,443,"Surv(study_time, all_cause_mortality) ~ education_4_groups"
+"16",4,"all_cause_mortality","education_4_groups","all","none",NA,NA,NA,NA,"education_4_groupsPrimary School",-0.0208775126453301,0.0604968434924587,-0.345100858823032,0.730018547821217,NA,NA,7188,713,NA
+"17",4,"all_cause_mortality","education_4_groups","all","none",NA,NA,NA,NA,"education_4_groupsMiddle School",0.011346620116676,0.0623805260552766,0.181893626652355,0.855666206259631,NA,NA,5986,612,NA
+"18",4,"all_cause_mortality","education_4_groups","all","none",NA,NA,NA,NA,"education_4_groupsHigh School or higher",-0.013317024106541,0.0599969502879498,-0.22196168376271,0.824343711245064,NA,NA,7451,745,NA
+"19",5,"ihd","smoking","all","none",NA,NA,NA,NA,"smokingNever smoker",NA,NA,NA,NA,25000,2271,12928,1151,"Surv(study_time, ihd) ~ smoking"
+"20",5,"ihd","smoking","all","none",NA,NA,NA,NA,"smokingOccasional smoker",-0.0517269102137876,0.0714571291148374,-0.723887327332424,0.469134910679465,NA,NA,2801,236,NA
+"21",5,"ihd","smoking","all","none",NA,NA,NA,NA,"smokingEx regular smoker",0.132399686332745,0.0667320155157635,1.9840504637758,0.0472502145636684,NA,NA,2823,279,NA
+"22",5,"ihd","smoking","all","none",NA,NA,NA,NA,"smokingSmoker",0.08457122141844,0.0502186361337632,1.68406049883901,0.0921699773333206,NA,NA,6448,605,NA
+"23",6,"all_cause_mortality","smoking","all","none",NA,NA,NA,NA,"smokingNever smoker",NA,NA,NA,NA,25000,2513,12928,1040,"Surv(study_time, all_cause_mortality) ~ smoking"
+"24",6,"all_cause_mortality","smoking","all","none",NA,NA,NA,NA,"smokingOccasional smoker",0.0744108094468925,0.0713707521999787,1.04259528102486,0.297135775750649,NA,NA,2801,242,NA
+"25",6,"all_cause_mortality","smoking","all","none",NA,NA,NA,NA,"smokingEx regular smoker",0.484689530366111,0.0611505625960351,7.92616633092984,2.26014819337741e-15,NA,NA,2823,360,NA
+"26",6,"all_cause_mortality","smoking","all","none",NA,NA,NA,NA,"smokingSmoker",0.547877600428683,0.045932807717656,11.9278055849846,8.47789397382701e-33,NA,NA,6448,871,NA
+"27",7,"ihd","has_diabetes","all","none",NA,NA,NA,NA,"has_diabetes",0.592562556660242,0.0641284004664249,9.2402516256504,2.459182351867e-20,25000,2271,NA,NA,"Surv(study_time, ihd) ~ has_diabetes"
+"28",8,"all_cause_mortality","has_diabetes","all","none",NA,NA,NA,NA,"has_diabetes",0.546585155550096,0.0613495544952069,8.90935818601257,5.13288317170232e-19,25000,2513,NA,NA,"Surv(study_time, all_cause_mortality) ~ has_diabetes"

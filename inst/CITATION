@@ -1,0 +1,7 @@
+bibentry(
+  "Misc",
+  title = "ckbtools: Tools for analyses in epidemiology",
+  author = person(given = "China Kadoorie Biobank Collaborative Group"),
+  year = 2026,
+  url = "https://ckbiobank.github.io/ckbtools"
+)

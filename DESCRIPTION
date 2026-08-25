@@ -1,0 +1,63 @@
+Package: ckbtools
+Title: Tools for Analyses in Epidemiology
+Version: 0.1.0
+Authors@R: c(
+    person(given = "Neil",
+           family = "Wright",
+           role = c("aut", "cre"),
+           email = "neil.wright@ndph.ox.ac.uk"),
+    person(given = "Derrick",
+           family = "Bennett",
+           role = c("aut")),
+    person(given = "Jonathan",
+           family = "Clarke",
+           role = c("aut")),
+    person(given = "Charlotte",
+           family = "Clarke",
+           role = c("aut")),
+    person(given = "Andri",
+           family = "Iona",
+           role = c("aut")),
+    person(given = "Christiana",
+           family = "Kartsonaki",
+           role = c("aut")),
+    person(given = "Maryam",
+           family = "Rahmati",
+           role = c("aut")),
+    person(given = "China Kadoorie Biobank Collaborative Group",
+           role = c("aut")),
+    person(given = "University of Oxford",
+           role = c("cph")))
+Description: A selection of tools for analyses in epidemiology.
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+Suggests:
+    asht,
+    knitr,
+    rmarkdown,
+    withr,
+    testthat (>= 3.3.0)
+VignetteBuilder: knitr
+URL: https://ckbiobank.github.io/ckbtools
+Imports: 
+    broom,
+    cli,
+    dplyr,
+    emmeans,
+    Epi,
+    glue,
+    lubridate,
+    magrittr,
+    purrr,
+    qvcalc,
+    rlang,
+    survival,
+    tibble,
+    tidyr,
+    tidyselect
+LazyData: true
+Depends: 
+    R (>= 3.5)
+Config/testthat/edition: 3
+Config/roxygen2/version: 8.0.0

@@ -1,0 +1,75 @@
+destination: docs
+
+development:
+  mode: auto
+
+url: https://ckbiobank.github.io/ckbtools/
+
+figures:
+  dpi: 320
+
+template:
+  bootstrap: 5
+  bslib:
+    code-bg: "#ffffff"
+
+navbar:
+ components:
+   articles:
+    text: Articles
+    menu:
+    - text: Observational epidemiology
+    - text: Standardised incidence rates
+      href: articles/incidence_rates.html
+    - text: Age-at-risk expansion
+      href: articles/age_at_risk.html
+    - text: Variance of the log risk
+      href: articles/variance_of_the_log_risk.html
+    - text: Trend and heterogeneity tests
+      href: articles/trend_heterogeneity.html
+    - text: -------
+    - text: Proteomics analyses
+    - text: Proteomics
+      href: articles/proteomics.html
+    - text: Associations with participant characteristics
+      href: articles/proteomics_characteristics.html
+    - text: Associations with incident disease
+      href: articles/proteomics_diseases.html
+
+reference:
+- title: Observational epidemiology
+- contents:
+  - incidence_rates
+  - expand_age_at_risk
+  - heterogeneity
+  - trend
+- title: Regression modelling
+- contents:
+  - linear_model
+  - logistic_model
+  - cox_model
+  - logistic_model_safely
+  - linear_model_safely
+  - cox_model_safely
+  - multiple_models
+- title: Proteomics data
+- desc: Functions for preparing and analysing CKB proteomics data
+- contents:
+  - prepare_olink_meta_data
+  - prepare_somascan_meta_data
+  - prepare_olink_data
+  - prepare_somascan_data
+  - prepare_proteomics_analysis_dataset
+  - summarise_continuous
+- title: Data
+- contents:
+  - ckbtools_baseline
+  - ckbtools_endpoints
+  - ckbtools_endpoint_definitions
+  - ckbtools_ascertainments
+  - ckbtools_raw_olink_meta_data
+  - ckbtools_raw_olink_protein_data
+  - ckbtools_raw_somascan_meta_data
+  - ckbtools_raw_somascan_protein_data
+  - ckbtools_raw_somascan_sample_data
+  - ckbtools_participant_data

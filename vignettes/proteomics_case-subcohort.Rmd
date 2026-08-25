@@ -1,0 +1,266 @@
+---
+title: "Associations of proteins in a case-subcohort study"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Associations of proteins in a case-subcohort study}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  class.output = "outp",
+  class.message = "outp",
+  class.warning = "outp",
+  class.error = "outp",
+  comment = "#"
+)
+library(ckbtools)
+
+# set number of Olink plates in synthetic data to prevent warning about number
+# of plates
+options(olink_expected_plates = 26)
+```
+
+
+This article demonstrates how to use this package to estimate associations between proteins and risk of incidence disease using Cox proportional hazards models, where the study uses a case-subcohort design. For a real application, see ["Plasma Proteomics to Identify Drug Targets for Ischemic Heart Disease"](https://doi.org/10.1016/j.jacc.2023.09.804).
+
+
+# Import data
+
+First, all relevant participant and protein data must be imported into R.
+For example, use `readRDS()` for RDS format data or `read.csv()` for csv data.
+```{r, eval = FALSE}
+baseline       <- readRDS("baseline.rds")
+ascertainments <- readRDS("ascertainments.rds")
+endpoints      <- readRDS("endpoints.rds")
+
+raw_olink_meta_data <- readRDS("olink_explore_meta.rds")
+raw_olink_protein_data <- readRDS("data_baseline_olink_explore.rds")
+
+raw_somascan_meta_data <- readRDS("somalogic_meta.rds")
+raw_somascan_protein_data <- readRDS("data_baseline_somalogic.rds")
+raw_somascan_sample_data  <- readRDS("data_baseline_somalogic_samples.rds")
+```
+
+For demonstration, the synthetic data sets available in this package can be used:
+
+1. ckbtools_participant_data
+2. ckbtools_ascertainments
+3. ckbtools_raw_olink_meta_data
+4. ckbtools_raw_olink_protein_data
+5. ckbtools_raw_somascan_meta_data
+6. ckbtools_raw_somascan_protein_data
+7. ckbtools_raw_somascan_sample_data
+
+## Baseline and endpoint data
+
+A data set containing relevant participant baseline and endpoint data must be prepared manually. See [CKB data](ckb_data.html) for an example.
+
+In this example, the outcome is IHD.
+
+## Identify case-subcohort participants
+
+```{r}
+ckbtools_participant_data$subcohort <- ckbtools_participant_data$proteomics_subcohort
+
+## keep only the subcohort and IHD cases outside the subcohort
+ckbtools_participant_data <- ckbtools_participant_data[ckbtools_participant_data$subcohort == 1 |
+                                                         ckbtools_participant_data$ihd == 1, ]
+```
+
+## Prentice weighting
+
+To use the [Prentice weighting method for case-subcohort designs](https://doi.org/10.1093/biomet/73.1.1), follow up time starts at zero for participants in the subcohort but starts just before outcome for cases outside subcohort.
+
+```{r}
+ckbtools_participant_data$time_out <- as.numeric(ckbtools_participant_data$ihd_date - ckbtools_participant_data$study_date)
+ckbtools_participant_data$time_in <- ckbtools_participant_data$time_out - 0.001
+ckbtools_participant_data$time_in[ckbtools_participant_data$subcohort == 1] <- 0
+```
+
+# Prepare protein data
+
+Prepare the protein data as described in [Proteomics](proteomics.html#preparing-protein-data).
+
+For this analysis, no plate correction is applied to the protein values but we will adjust for "plateid" in the analysis models. SomaScan values are log<sub>2</sub> transformed. Protein values are then scaled to have standard deviations of one.
+
+```{r, message=FALSE}
+## set CKB data release
+options(ckb.data.release = "19.02")
+
+## meta data
+olink_meta_data <- prepare_olink_meta_data(ckbtools_raw_olink_meta_data,
+                                           ckbtools_raw_olink_protein_data)
+
+somascan_meta_data <- prepare_somascan_meta_data(ckbtools_raw_somascan_meta_data)
+
+## protein data
+olink_protein_data <- prepare_olink_data(ckbtools_raw_olink_protein_data,
+                                         olink_meta_data)
+
+somascan_protein_data <- prepare_somascan_data(ckbtools_raw_somascan_protein_data,
+                                               ckbtools_raw_somascan_sample_data,
+                                               somascan_meta_data,
+                                               transform = "log2")
+
+## proteomics analysis data
+olink_analysis_data <- prepare_proteomics_analysis_dataset(
+  ckbtools_participant_data,
+  olink_protein_data,
+  olink_meta_data,
+  plate_correction = "none",
+  scaling = "scale"
+)
+
+somascan_analysis_data <- prepare_proteomics_analysis_dataset(
+  ckbtools_participant_data,
+  somascan_protein_data,
+  somascan_meta_data,
+  plate_correction = "none",
+  scaling = "scale"
+)
+```
+
+
+# Analysis 
+
+The `multiple_models()` function can be used to run multiple regression models.
+
+*It is highly recommended to first run some individual analyses  to check that the models and output are as intended, before running analyses for many proteins.*
+
+The code below fits models for all Olink and SomaScan proteins. To set the correct entry and exit times for the Prentice weighting use the `time_in` and `time_out` arguments. Robust standard errors should also be used by setting `clusted = "csid"`.
+
+```{r, message=FALSE}
+fully_adjusted <- c("strata(sex)",
+                    "strata(region)",
+                    "poly(age_at_study_date, 2)",
+                    "poly(hours_since_last_ate, 2)",
+                    "poly(region_mean_temp, 2)",
+                    "education",
+                    "smoking",
+                    "alcohol",
+                    "met",
+                    "sbp_mean",
+                    "has_diabetes",
+                    "bmi_calc",
+                    "plateid")
+
+
+olink_results <- multiple_models(
+  olink_analysis_data,
+  model      = "cox",
+  exposures  = olink_meta_data$name,
+  outcomes   = "ihd",
+  time_in    = "time_in",
+  time_out   = "time_out",
+  cluster    = "csid",
+  adjust_for = list(full = fully_adjusted)
+)
+
+somascan_results <- multiple_models(
+  somascan_analysis_data,
+  model      = "cox",
+  exposures  = somascan_meta_data$name,
+  outcomes   = "ihd",
+  time_in    = "time_in",
+  time_out   = "time_out",
+  cluster    = "csid",
+  adjust_for = list(full = fully_adjusted)
+)
+```
+
+*Note that education, smoking and alcohol are formatted as factors in the data, so they are correctly used as categorical variables in the model. If you want to include a categorical variable that is coded numerically then make sure to use `"as.factor(variable)"`.*
+
+# Summarise results
+
+## Check for errors and warnings
+
+After fitting multiple models, always check for warnings and errors. If there are any, decide how these will be handled when summarising results or for further analyses.
+
+```{r}
+olink_results %>%
+  dplyr::filter(!is.na(error) | !is.na(warnings)) %>%
+  dplyr::distinct(outcome, exposure, adjustment, error, warnings)
+
+somascan_results %>%
+  dplyr::filter(!is.na(error) | !is.na(warnings)) %>%
+  dplyr::distinct(outcome, exposure, adjustment, error, warnings)
+```
+
+## Select one result per protein
+
+Some Olink assays are repeated across panels. To summarise the results as in the referenced paper, select the assay by panel preference Cardiometabolic > Inflammation > Neurology > Oncology, and prefer models with no error or warning.
+
+```{r}
+olink_summary_results <- olink_results %>%
+  dplyr::filter(exposure %in% olink_meta_data$name) %>%
+  dplyr::inner_join(olink_meta_data, by = c("exposure" = "name")) %>%
+  dplyr::group_by(outcome, adjustment, uniprot) %>%
+  dplyr::arrange(!is.na(error) | !is.na(warnings), panel) %>%
+  dplyr::filter(dplyr::row_number() == 1) %>%
+  dplyr::ungroup()
+```
+
+Some SomaScan aptamers target the same protein. To summarise the results as in the referenced paper, select one aptamer per target choosing the result with the smallest p-value and no error or warning (or just the smallest p-value if all have error or warning)
+
+```{r}
+somascan_summary_results <- somascan_results %>%
+  dplyr::inner_join(somascan_meta_data, by = c("exposure" = "name")) %>%
+  dplyr::group_by(adjustment, target) %>%
+  dplyr::arrange(!is.na(error) | !is.na(warnings), p.value) %>%
+  dplyr::filter(dplyr::row_number() == 1) %>%
+  dplyr::ungroup()
+```
+
+
+## Multiple testing
+
+In this example, apply a false discovery rate correction separately in the Olink and SomaScan analyses.
+
+```{r}
+olink_summary_results <- olink_summary_results %>%
+  ## handle errors and warnings
+  dplyr::mutate(p.value = dplyr::if_else(!is.na(error) | !is.na(warnings), 1, p.value)) %>%
+  ## multiple testing correction
+  dplyr::mutate(p.value.fdr = p.adjust(p.value, method = "fdr"))
+
+somascan_summary_results <- somascan_summary_results %>%
+  ## handle errors and warnings
+  dplyr::mutate(p.value = dplyr::if_else(!is.na(error) | !is.na(warnings), 1, p.value)) %>%
+  ## multiple testing correction
+  dplyr::mutate(p.value.fdr = p.adjust(p.value, method = "fdr"))
+```
+
+
+# Present results
+
+The number of proteins significantly associated (FDR-corrected p < 0.05) for Olink and SomaScan proteins can then be summarised.
+
+```{r}
+olink_summary_results %>%
+  dplyr::summarise(n = dplyr::n(),
+                   error_or_warning = sum(!is.na(error) | !is.na(warnings)),
+                   significant = sum(p.value.fdr < 0.05),
+                   significant_inverse = sum(p.value.fdr < 0.05 & estimate < 0),
+                   .groups = "drop")
+
+somascan_summary_results %>%
+  dplyr::summarise(n = dplyr::n(),
+                   error_or_warning = sum(!is.na(error) | !is.na(warnings)),
+                   significant = sum(p.value.fdr < 0.05),
+                   significant_inverse = sum(p.value.fdr < 0.05 & estimate < 0),
+                   .groups = "drop")
+```
+
+```{r}
+olink_summary_results %>%
+  dplyr::arrange(p.value.fdr) %>%
+  dplyr::select(assay, uniprot, estimate, robust.se, p.value, p.value.fdr) %>%
+  head(5)
+
+somascan_summary_results %>%
+  dplyr::arrange(p.value.fdr) %>%
+  dplyr::select(target, uniprot, estimate, robust.se, p.value, p.value.fdr) %>%
+  head(5)
+```

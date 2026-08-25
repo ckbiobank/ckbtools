@@ -1,0 +1,202 @@
+---
+title: "Standardised incidence rates"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Standardised incidence rates}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+  
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  class.output = "outp",
+  class.message = "outp",
+  class.warning = "outp",
+  class.error = "outp",
+  comment = "#"
+)
+library(ckbtools)
+```
+
+# Introduction
+
+The `incidence_rates()` function calculates standardised incidence rates, including standardising by age-at-risk.
+
+The function uses `Epi::Lexis()` and `Epi::splitLexis()` to expand each participant row into separate rows for each age-at-risk group (defined by the `ages` argument). A new column called `agegrp` is created which can be used to calculate separate rates for each age-at-risk group or to standardise the rates by age group.
+
+By default, the function uses the whole data set to create the weights. Or the `weights` argument can be used to provide weights from a reference/standard population.
+
+The function returns a list of two data frames:
+
+**incidence_rates_in_all_strata** containing a row for each stratum formed by the grouping variable(s) (specified by the `group` argument) and the standardisation variable(s) (specified by the `adjust_for` argument), with results columns:
+
+- **std_pyar**: Person-years at risk in the reference/standard population
+- **pyar**: Person-years at risk in this stratum 
+- **nevents**: Number of events in this stratum
+- **incidencerate**: Crude incidence rate in this stratum
+- **weight**: Weight for this stratum
+
+**standardised_incidence_rates** containing a row for each group formed by the grouping variable(s), with results columns:
+
+- **crude_nevents**: Number of events
+- **crude_pyar**: Person-years at risk
+- **crude_ir**: Crude incidence rate
+- **std_ir**: Standardised incidence rate
+- **std_ir_se**: Standard error of standardised incidence rate
+- **std_ir_lci**: Lower limit of 95% confidence interval for standardised incidence rate
+- **std_ir_uci**: Upper limit of 95% confidence interval for standardised incidence rate
+
+The incidence incidence rates in this data frame are multiplied by a scale factor set by the `per_pyar` argument (default: 1000).
+
+# Number of events
+The function gives a warning when any stratum contains fewer than 20 events, and when any stratum contains zero events. Results may be unreliable in these cases. See [Confidence intervals](#confidence-intervals) for available methods for calculating confidence intervals which may be more suitable when there are few events.
+
+# Examples
+
+### Prepare example data
+```{r}
+# Create BMI groups column
+ckbtools_participant_data$bmi_grp <- cut(ckbtools_participant_data$bmi_calc,
+                                         c(0, 18.5, 25, 30, 100),
+                                         labels = c("<18.5", "18.5-25", "25-30", "30+"),
+                                         right = FALSE)
+```
+
+
+### Identify relevant columns in the data set
+To calculate incidence rates identify the columns that contain participants’ date of birth (argument: `col.dob`, default: “dob_anon”), date of study entry (`col.entry_date`, “study_date”), date of study exit (`col.exit_date`, “endpoint_date”) and status at exit (`col.status`, “endpoint”).
+
+### Overall incidence rate
+
+Not specifying the `group` and `adjust_for` arguments will calculate overall incidence rate. The standardised incidence rate will equal the crude incidence rate.
+
+```{r}
+incidence_rates(ckbtools_participant_data,
+                col.exit_date  = "ihd_date",
+                col.status     = "ihd")
+```
+
+### Crude incidence rates
+
+Not specifying the `adjust_for` argument will calculate the crude incidence rate for each group. The standardised incidence rate for each group will equal the crude incidence rate for that group. For example, by BMI group:
+
+```{r}
+incidence_rates(ckbtools_participant_data,
+                col.exit_date = "ihd_date",
+                col.status    = "ihd",
+                group         = "bmi_grp")
+```
+
+To calculate incidence rates by age-at-risk groups (30-49, 50-59, 60-69, 70-79 years), set `group = "agegrp"`. Any follow-up time outside these age groups is ignored.
+
+```{r}
+incidence_rates(ckbtools_participant_data,
+                col.exit_date = "ihd_date",
+                col.status    = "ihd",
+                ages          = c(30, 50, 60, 70, 80),
+                group         = "agegrp")
+```
+
+
+### Standardised by sex and age
+
+To calculate incidence rates by BMI group, standardised by sex (column "is_female") and 10 year age groups (and excluding follow-up time where participants are younger than 40 or older than 79):
+
+#### Using the Normal approximation for confidence intervals
+```{r}
+incidence_rates(ckbtools_participant_data,
+                col.exit_date  = "ihd_date",
+                col.status     = "ihd",
+                ages           = seq(40, 80, 10),
+                group          = "bmi_grp",
+                adjust_for     = c("is_female", "agegrp"),
+                method         = "norm")
+```
+
+#### Using the gamma method for confidence intervals
+```{r}
+incidence_rates(ckbtools_participant_data,
+                col.exit_date  = "ihd_date",
+                col.status     = "ihd",
+                ages           = seq(40, 80, 10),
+                group          = "bmi_grp",
+                adjust_for     = c("is_female", "agegrp"),
+                method         = "gamma")
+```
+
+Note how the standardised incidence rates are exactly the same, but the confidence interval limits are slightly different.
+
+### External weights
+
+To calculate incidence rates by BMI group, standardised by 10 year age groups with external weights:
+
+```{r }
+std_pop_w <- data.frame(agegrp = c("[40,50)",
+                                   "[50,60)",
+                                   "[60,70)",
+                                   "[70,80)"),
+                        std_pyar = c(50, 30, 20, 10))
+
+incidence_rates(ckbtools_participant_data,
+                col.exit_date  = "ihd_date",
+                col.status     = "ihd",
+                ages           = seq(40, 80, 10),
+                group          = "bmi_grp",
+                adjust_for     = "agegrp",
+                weights        = std_pop_w,
+                method         = "gamma")
+```
+
+Note that there must be columns in the `weights` data frame that match the `adjust_for` variables, and one row for each combination of levels of those variables, and a column named `std_pyar` with the person-years at risk for that stratum in the reference/standard population.
+
+### Multiple groups
+
+Multiple columns can be specified in `group` to calculate incidence rates for all combinations. For example, to calculate incidence rates by sex and 10 year age groups (between 30 and 80 years):
+
+```{r}
+incidence_rates(ckbtools_participant_data,
+                col.dob        = "dob_anon",
+                col.entry_date = "study_date",
+                col.exit_date  = "ihd_date",
+                col.status     = "ihd",
+                ages           = seq(30, 80, 10),
+                group          = c("is_female", "agegrp"))
+```
+
+# Methods
+
+If there have been $n$ events during $t$ person-years at risk, then the incidence rate is given by $$
+r = \frac{n}{t} \text{ .}
+$$ The standardised incidence rate across strata (indexed by $i$) is calculated as $$
+\textrm{SIR} = \frac{\sum_i{r_i \times s_i}}{\sum_i{s_i}}
+$$ where $r_i = n_i / t_i$ and $s_i$ are the person-years at risk for each stratum in a standard population.
+
+By default, this function will calculate the $s_i$ using all participants in the produced data, and calculate standard incidence rates for groups defined by `group`.
+
+The function returns the weight for each stratum calculated as $s_i/ \sum_i{s_i}$.
+
+
+## Confidence intervals
+
+By treating the number of events in each stratum as a Poisson variable, the variance of the SIR can be calculated by $$
+\textrm{var}(\textrm{SIR}) = \sum_i \left( \left(\frac{w_i}{\sum w_i}\right)^2 \times \frac{r_i}{t_i}\right) \text{ ,}
+$$ then the standard error is given by $\sqrt{\textrm{var}}$. Using this standard error to construct confidence intervals by a normal approximation may not be suitable when there are few events or rates are close to zero, or there are a small number of events within strata.
+
+Other methods for calculating confidence intervals including the gamma method of Fay and Feuer (1997). This is available in the `wspoissonTest()` function in the `asht` package, and can be used in `incidence_rates()` by setting the argument `method = "gamma"`.
+
+Using a normal approximation method is not suitable when there are fewer than 100 events. Methods similar to the gamma method of Fay and Feuer (1997) have been shown to be suitable when there are 10 or more events (Morris et al. 2018).
+
+## Date calculations using Epi package
+Dates are converted to a numerical value, giving the calendar year as a fractional number, assuming that years are all 365.25 days long, so inaccuracies may arise see [Epi::cal.yr] for more details
+
+
+
+# References
+
+[Armitage, Berry, and Matthews. *Statistical Methods in Medical Research*. 2002. (Chapter: Statistical methods in epidemiology. Section: 19.3 Rates and standardization. Pages 659 - 633.)](https://www.wiley.com/en-ae/Statistical+Methods+in+Medical+Research%2C+4th+Edition-p-9780632052578) (Not open access)
+
+[Fay, M. P. & Feuer, E. J. Confidence Intervals for Directly Standardized Rates: A Method Based on the Gamma Distribution. Statistics in Medicine 16, 791–801 (1997).](https://doi.org/10.1002/(SICI)1097-0258(19970415)16:7<791::AID-SIM500>3.0.CO;2-%23) (Not open access)
+
+[Morris, J. K., Tan, J., Fryers, P. & Bestwick, J. Evaluation of stability of directly standardized rates for sparse data using simulation methods. Popul Health Metrics 16, 19 (2018).](https://doi.org/10.1186/s12963-018-0177-1)
+
+[Ng, H. K. T., Filardo, G. & Zheng, G. Confidence interval estimating procedures for standardized incidence rates. Computational Statistics & Data Analysis 52, 3501–3516 (2008).](https://doi.org/10.1016/j.csda.2007.11.004) (Not open access)

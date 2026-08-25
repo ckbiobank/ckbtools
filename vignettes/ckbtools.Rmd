@@ -1,0 +1,42 @@
+---
+title: "ckbtools"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ckbtools}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Epidemiology tools
+
+[Standardised incidence rates](incidence_rates.html)
+
+[Age-at-risk expansion](age_at_risk.html)
+
+[Variance of the log risk ("Floating absolute risk")](variance_of_the_log_risk.html)
+
+[Trend and heterogeneity tests](trend_heterogeneity.html)
+
+
+# Proteomics
+
+[Overview](proteomics.html)
+
+[Associations of proteins with participant characteristics](proteomics_characteristics.html)
+
+[Associations of proteins with incident disease](proteomics_diseases.html)
+
+[Associations of proteins with MI cases](proteomics_mi.html)
+
+
+# Package data
+
+[Synthetic CKB data](ckb_data.html)
+

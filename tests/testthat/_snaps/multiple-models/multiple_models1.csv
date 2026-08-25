@@ -1,0 +1,43 @@
+"","model_id","outcome","exposure","subgroup","adjustment","error","warnings","messages","output","term","estimate","std.error","statistic","p.value","n","n_group","formula"
+"1",1,"sbp_mean","sex","all","none",NA,NA,NA,NA,"sexMale",NA,NA,NA,NA,25000,10583,"sbp_mean ~ sex"
+"2",1,"sbp_mean","sex","all","none",NA,NA,NA,NA,"sexFemale",-2.74030964329452,0.205418004924784,-13.3401628756832,1.85908200356119e-40,NA,14417,NA
+"3",1,"sbp_mean","sex","all","none",NA,NA,NA,NA,"(Intercept)",108.826041765097,0.155993302244102,697.632784225589,0,NA,NA,NA
+"4",2,"bmi_calc","sex","all","none",NA,NA,NA,NA,"sexMale",NA,NA,NA,NA,25000,10583,"bmi_calc ~ sex"
+"5",2,"bmi_calc","sex","all","none",NA,NA,NA,NA,"sexFemale",0.341075788566872,0.0425244314298304,8.02070191413803,1.09717817094559e-15,NA,14417,NA
+"6",2,"bmi_calc","sex","all","none",NA,NA,NA,NA,"(Intercept)",22.7891524142491,0.0322928191578,705.703404304503,0,NA,NA,NA
+"7",3,"sbp_mean","age_at_baseline_group","all","none",NA,NA,NA,NA,"age_at_baseline_group[30,40)",NA,NA,NA,NA,25000,3662,"sbp_mean ~ age_at_baseline_group"
+"8",3,"sbp_mean","age_at_baseline_group","all","none",NA,NA,NA,NA,"age_at_baseline_group[40,50)",0.971528364289201,0.323308814329067,3.00495477150948,0.00265883663979601,NA,7540,NA
+"9",3,"sbp_mean","age_at_baseline_group","all","none",NA,NA,NA,NA,"age_at_baseline_group[50,60)",1.67624808089353,0.32215495313233,5.20323547595738,1.9739380758993e-07,NA,7708,NA
+"10",3,"sbp_mean","age_at_baseline_group","all","none",NA,NA,NA,NA,"age_at_baseline_group[60,70)",3.03499342115473,0.358165269917025,8.47372337875707,2.50581540644912e-17,NA,4448,NA
+"11",3,"sbp_mean","age_at_baseline_group","all","none",NA,NA,NA,NA,"age_at_baseline_group[70,80)",5.27578661181687,0.476727950128257,11.0666609969008,2.119381291556e-28,NA,1642,NA
+"12",3,"sbp_mean","age_at_baseline_group","all","none",NA,NA,NA,NA,"(Intercept)",105.549426542875,0.265250025093641,397.924284853934,0,NA,NA,NA
+"13",4,"bmi_calc","age_at_baseline_group","all","none",NA,NA,NA,NA,"age_at_baseline_group[30,40)",NA,NA,NA,NA,25000,3662,"bmi_calc ~ age_at_baseline_group"
+"14",4,"bmi_calc","age_at_baseline_group","all","none",NA,NA,NA,NA,"age_at_baseline_group[40,50)",-0.149548564582621,0.0668550438844329,-2.23690773191525,0.0253011525822485,NA,7540,NA
+"15",4,"bmi_calc","age_at_baseline_group","all","none",NA,NA,NA,NA,"age_at_baseline_group[50,60)",-0.351855775114259,0.0666164440148177,-5.28181562852552,1.28979635913765e-07,NA,7708,NA
+"16",4,"bmi_calc","age_at_baseline_group","all","none",NA,NA,NA,NA,"age_at_baseline_group[60,70)",-0.588689668145116,0.0740627962397922,-7.94852068829703,1.96673122591759e-15,NA,4448,NA
+"17",4,"bmi_calc","age_at_baseline_group","all","none",NA,NA,NA,NA,"age_at_baseline_group[70,80)",-0.75105258536337,0.0985796446437773,-7.61873902140079,2.6523677981894e-14,NA,1642,NA
+"18",4,"bmi_calc","age_at_baseline_group","all","none",NA,NA,NA,NA,"(Intercept)",23.2935008192243,0.0548494234677227,424.68086894171,0,NA,NA,NA
+"19",5,"sbp_mean","education_4_groups","all","none",NA,NA,NA,NA,"education_4_groupsNo formal school",NA,NA,NA,NA,25000,4375,"sbp_mean ~ education_4_groups"
+"20",5,"sbp_mean","education_4_groups","all","none",NA,NA,NA,NA,"education_4_groupsPrimary School",-2.11185822402297,0.306641974093163,-6.88704874884921,5.83110234669545e-12,NA,7188,NA
+"21",5,"sbp_mean","education_4_groups","all","none",NA,NA,NA,NA,"education_4_groupsMiddle School",-3.03676590138795,0.318077430308965,-9.54725363078477,1.44952644719301e-21,NA,5986,NA
+"22",5,"sbp_mean","education_4_groups","all","none",NA,NA,NA,NA,"education_4_groupsHigh School or higher",-5.4912126234238,0.304587466945995,-18.028360386862,3.34807853580862e-72,NA,7451,NA
+"23",5,"sbp_mean","education_4_groups","all","none",NA,NA,NA,NA,"(Intercept)",110.216685714287,0.241768866041995,455.876257016246,0,NA,NA,NA
+"24",6,"bmi_calc","education_4_groups","all","none",NA,NA,NA,NA,"education_4_groupsNo formal school",NA,NA,NA,NA,25000,4375,"bmi_calc ~ education_4_groups"
+"25",6,"bmi_calc","education_4_groups","all","none",NA,NA,NA,NA,"education_4_groupsPrimary School",0.0497801955639752,0.063725164028193,0.781170144057247,0.434709829248894,NA,7188,NA
+"26",6,"bmi_calc","education_4_groups","all","none",NA,NA,NA,NA,"education_4_groupsMiddle School",0.363154766836894,0.0661016368683652,5.4938846304227,3.97019729845785e-08,NA,5986,NA
+"27",6,"bmi_calc","education_4_groups","all","none",NA,NA,NA,NA,"education_4_groupsHigh School or higher",0.274499082385762,0.0632982041987777,4.33660142274721,1.45268779882385e-05,NA,7451,NA
+"28",6,"bmi_calc","education_4_groups","all","none",NA,NA,NA,NA,"(Intercept)",22.8027657142856,0.0502434824553912,453.845247182679,0,NA,NA,NA
+"29",7,"sbp_mean","smoking","all","none",NA,NA,NA,NA,"smokingNever smoker",NA,NA,NA,NA,25000,12928,"sbp_mean ~ smoking"
+"30",7,"sbp_mean","smoking","all","none",NA,NA,NA,NA,"smokingOccasional smoker",1.00280503382845,0.335509199768457,2.98890472905218,0.00280251588285865,NA,2801,NA
+"31",7,"sbp_mean","smoking","all","none",NA,NA,NA,NA,"smokingEx regular smoker",1.35833509792243,0.334432948693198,4.06160667849908,4.88847100284371e-05,NA,2823,NA
+"32",7,"sbp_mean","smoking","all","none",NA,NA,NA,NA,"smokingSmoker",0.490563886568689,0.245431318140193,1.99878275635741,0.0456426736298365,NA,6448,NA
+"33",7,"sbp_mean","smoking","all","none",NA,NA,NA,NA,"(Intercept)",106.853496287131,0.141582778643474,754.706874034467,0,NA,NA,NA
+"34",8,"bmi_calc","smoking","all","none",NA,NA,NA,NA,"smokingNever smoker",NA,NA,NA,NA,25000,12928,"bmi_calc ~ smoking"
+"35",8,"bmi_calc","smoking","all","none",NA,NA,NA,NA,"smokingOccasional smoker",0.11644329641817,0.0689384726341886,1.6890901693755,0.0912146234932884,NA,2801,NA
+"36",8,"bmi_calc","smoking","all","none",NA,NA,NA,NA,"smokingEx regular smoker",0.559272226372281,0.0687173308432916,8.13873617483323,4.17860126766497e-16,NA,2823,NA
+"37",8,"bmi_calc","smoking","all","none",NA,NA,NA,NA,"smokingSmoker",-0.602723079380113,0.0504297951318689,-11.9517257169904,7.81485679624938e-33,NA,6448,NA
+"38",8,"bmi_calc","smoking","all","none",NA,NA,NA,NA,"(Intercept)",23.065099009901,0.0290916032040895,792.843861099364,0,NA,NA,NA
+"39",9,"sbp_mean","has_diabetes","all","none",NA,NA,NA,NA,"has_diabetes",4.13209874519591,0.384123414264483,10.7572165396583,6.27715938410656e-27,25000,NA,"sbp_mean ~ has_diabetes"
+"40",9,"sbp_mean","has_diabetes","all","none",NA,NA,NA,NA,"(Intercept)",106.932877483016,0.105700266688792,1011.66137828065,0,NA,NA,NA
+"41",10,"bmi_calc","has_diabetes","all","none",NA,NA,NA,NA,"has_diabetes",1.05123004668963,0.0792443089641833,13.2656850748079,4.99975219506656e-40,25000,NA,"bmi_calc ~ has_diabetes"
+"42",10,"bmi_calc","has_diabetes","all","none",NA,NA,NA,NA,"(Intercept)",22.9062448608645,0.0218058683226114,1050.46240406359,0,NA,NA,NA

@@ -1,0 +1,11 @@
+^ckbtools\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^README\.Rmd$
+^data-raw$
+^pkgdown$
+^docs$
+^doc$
+^Meta$
+^_pkgdown\.yml$
+^\.github$
