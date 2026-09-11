@@ -1,0 +1,20 @@
+
+pre.sourceCode {
+  background-color: #ffffff;
+  background: linear-gradient(to right, #041e42 3px, transparent 3px);
+}
+
+pre.outp {
+  background: linear-gradient(to right, #f93822 3px, transparent 3px);
+  border: 0;
+  border-radius: 0;
+}
+
+pre.outp:has(+ pre.outp) {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+pre.outp + pre.outp {
+  padding-top: 0;
+}

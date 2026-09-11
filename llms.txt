@@ -1,0 +1,140 @@
+# ckbtools
+
+`ckbtools` provides tools for statistical analyses in epidemiology.
+
+It is developed by [China Kadoorie Biobank](http://www.ckbiobank.org)
+researchers for users of CKB data and other researchers in epidemiology.
+
+Features of the package include:
+
+- Standardised incidence rates
+- Age-at-risk expansion
+- Variance of the log risk
+- Trend and heterogeneity tests
+- Preparation of CKB proteomics data
+- Regression model helper functions
+
+## Installation
+
+Install the latest version of `ckbtools` from the ckbiobank R-universe:
+
+``` r
+
+install.packages('ckbtools',
+                 repos = c('https://ckbiobank.r-universe.dev/', getOption('repos')))
+```
+
+This will also install required dependencies using your existing package
+repositories.
+
+## Get started
+
+Read
+[`vignette("ckbtools")`](https://ckbiobank.github.io/ckbtools/articles/ckbtools.md)
+to get started.
+
+## Citation
+
+If you find this package useful, please cite as:
+
+China Kadoorie Biobank Collaborative Group (2026). “ckbtools: Tools for
+analyses in epidemiology.” <https://ckbiobank.github.io/ckbtools>.
+
+## Development and support
+
+This package is under development and will be updated with bug fixes and
+additional functions related to statistical analyses in epidemiology.
+Please refer to the package documentation for guidance on usage and use
+GitHub issues to report bugs. This package is provided “as is” for
+research purposes, without warranty of any kind. The authors accept no
+liability for its use or for any results derived from it.
+
+# Package index
+
+## Observational epidemiology
+
+- [`incidence_rates()`](https://ckbiobank.github.io/ckbtools/reference/incidence_rates.md)
+  : Calculate standardised incidence rates
+- [`expand_age_at_risk()`](https://ckbiobank.github.io/ckbtools/reference/expand_age_at_risk.md)
+  : Lexis expansion of data by age-at-risk
+- [`heterogeneity()`](https://ckbiobank.github.io/ckbtools/reference/heterogeneity.md)
+  : Test for heterogeneity
+- [`trend()`](https://ckbiobank.github.io/ckbtools/reference/trend.md) :
+  Test for trend
+
+## Regression modelling
+
+- [`linear_model()`](https://ckbiobank.github.io/ckbtools/reference/linear_model.md)
+  : Estimate the association between an exposure and a continuous
+  outcome
+- [`logistic_model()`](https://ckbiobank.github.io/ckbtools/reference/logistic_model.md)
+  : Estimate the association between an exposure and a binary outcome
+- [`cox_model()`](https://ckbiobank.github.io/ckbtools/reference/cox_model.md)
+  : Estimate the association between an exposure and incident disease
+- [`linear_model_safely()`](https://ckbiobank.github.io/ckbtools/reference/safemodels.md)
+  [`logistic_model_safely()`](https://ckbiobank.github.io/ckbtools/reference/safemodels.md)
+  [`cox_model_safely()`](https://ckbiobank.github.io/ckbtools/reference/safemodels.md)
+  : Safe versions of regression model function
+- [`multiple_models()`](https://ckbiobank.github.io/ckbtools/reference/multiple_models.md)
+  : Multiple linear, logistic or Cox proportional hazards regression
+  models
+
+## Proteomics data
+
+- [`prepare_olink_meta_data()`](https://ckbiobank.github.io/ckbtools/reference/prepare_olink_meta_data.md)
+  : Preparation of Olink meta data
+- [`prepare_somascan_meta_data()`](https://ckbiobank.github.io/ckbtools/reference/prepare_somascan_meta_data.md)
+  : Preparation of SomaScan meta data
+- [`prepare_olink_data()`](https://ckbiobank.github.io/ckbtools/reference/prepare_olink_data.md)
+  : Preparation of Olink protein data
+- [`prepare_somascan_data()`](https://ckbiobank.github.io/ckbtools/reference/prepare_somascan_data.md)
+  : Prepare SomaScan protein data
+- [`prepare_proteomics_analysis_dataset()`](https://ckbiobank.github.io/ckbtools/reference/prepare_proteomics_analysis_dataset.md)
+  : Preparation of a proteomics analysis data set
+- [`summarise_continuous()`](https://ckbiobank.github.io/ckbtools/reference/summarise_continuous.md)
+  : Summarise continuous variables
+
+## Data
+
+- [`ckbtools_baseline`](https://ckbiobank.github.io/ckbtools/reference/ckbtools_baseline.md)
+  : Synthetic CKB baseline data for demoing functions
+- [`ckbtools_endpoints`](https://ckbiobank.github.io/ckbtools/reference/ckbtools_endpoints.md)
+  : Synthetic CKB endpoint data for demoing functions
+- [`ckbtools_endpoint_definitions`](https://ckbiobank.github.io/ckbtools/reference/ckbtools_endpoint_definitions.md)
+  : Synthetic CKB endpoint definitions data for demoing functions
+- [`ckbtools_ascertainments`](https://ckbiobank.github.io/ckbtools/reference/ckbtools_ascertainments.md)
+  : Synthetic CKB ascertainment data for demoing functions
+- [`ckbtools_raw_olink_meta_data`](https://ckbiobank.github.io/ckbtools/reference/ckbtools_raw_olink_meta_data.md)
+  : Synthetic CKB Olink proteomics data for demoing functions
+- [`ckbtools_raw_olink_protein_data`](https://ckbiobank.github.io/ckbtools/reference/ckbtools_raw_olink_protein_data.md)
+  : Synthetic CKB Olink proteomics data for demoing functions
+- [`ckbtools_raw_somascan_meta_data`](https://ckbiobank.github.io/ckbtools/reference/ckbtools_raw_somascan_meta_data.md)
+  : Synthetic CKB SomaScan proteomics data for demoing functions
+- [`ckbtools_raw_somascan_protein_data`](https://ckbiobank.github.io/ckbtools/reference/ckbtools_raw_somascan_protein_data.md)
+  : Synthetic CKB SomaScan proteomics data for demoing functions
+- [`ckbtools_raw_somascan_sample_data`](https://ckbiobank.github.io/ckbtools/reference/ckbtools_raw_somascan_sample_data.md)
+  : Synthetic CKB SomaScan proteomics data for demoing functions
+- [`ckbtools_participant_data`](https://ckbiobank.github.io/ckbtools/reference/ckbtools_participant_data.md)
+  : Synthetic CKB participant data for demoing functions
+
+# Articles
+
+### All vignettes
+
+- [Age-at-risk
+  expansion](https://ckbiobank.github.io/ckbtools/articles/age_at_risk.md):
+- [CKB data](https://ckbiobank.github.io/ckbtools/articles/ckb_data.md):
+- [ckbtools](https://ckbiobank.github.io/ckbtools/articles/ckbtools.md):
+- [Standardised incidence
+  rates](https://ckbiobank.github.io/ckbtools/articles/incidence_rates.md):
+- [Associations of proteins in a case-subcohort
+  study](https://ckbiobank.github.io/ckbtools/articles/proteomics_case-subcohort.md):
+- [Associations of proteins with participant
+  characteristics](https://ckbiobank.github.io/ckbtools/articles/proteomics_characteristics.md):
+- [Associations of proteins with incident
+  disease](https://ckbiobank.github.io/ckbtools/articles/proteomics_diseases.md):
+- [Proteomics](https://ckbiobank.github.io/ckbtools/articles/proteomics.md):
+- [Trend and heterogeneity
+  tests](https://ckbiobank.github.io/ckbtools/articles/trend_heterogeneity.md):
+- [Variance of the log
+  risk](https://ckbiobank.github.io/ckbtools/articles/variance_of_the_log_risk.md):

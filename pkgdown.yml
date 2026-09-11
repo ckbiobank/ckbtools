@@ -1,0 +1,18 @@
+pandoc: 3.8.3
+pkgdown: 2.2.1
+pkgdown_sha: ~
+articles:
+  age_at_risk: age_at_risk.html
+  ckb_data: ckb_data.html
+  ckbtools: ckbtools.html
+  incidence_rates: incidence_rates.html
+  proteomics_case-subcohort: proteomics_case-subcohort.html
+  proteomics_characteristics: proteomics_characteristics.html
+  proteomics_diseases: proteomics_diseases.html
+  proteomics: proteomics.html
+  trend_heterogeneity: trend_heterogeneity.html
+  variance_of_the_log_risk: variance_of_the_log_risk.html
+last_built: 2026-09-11T12:00Z
+urls:
+  reference: https://ckbiobank.github.io/ckbtools/reference
+  article: https://ckbiobank.github.io/ckbtools/articles
